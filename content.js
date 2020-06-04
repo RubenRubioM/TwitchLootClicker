@@ -1,15 +1,70 @@
-/*
-<button class="tw-button tw-button--success tw-interactive"><span class="tw-button__text" data-a-target="tw-core-button-label-text"><div class="claimable-bonus__icon tw-flex"><div class="tw-align-items-center tw-icon tw-inline-flex"><div class="tw-aspect tw-aspect--align-top"><div class="tw-aspect__spacer" style="padding-bottom: 100%;"></div><svg class="tw-icon__svg" width="100%" height="100%" version="1.1" viewBox="0 0 20 20" x="0px" y="0px"><g><path fill-rule="evenodd" d="M16.503 3.257L18 7v11H2V7l1.497-3.743A2 2 0 015.354 2h9.292a2 2 0 011.857 1.257zM5.354 4h9.292l1.2 3H4.154l1.2-3zM4 9v7h12V9h-3v4H7V9H4zm7 0v2H9V9h2z" clip-rule="evenodd"></path></g></svg></div></div></div></span></button>
 
-*/
+var claimable = false;
+var i = 1;
+
+function isEmpty(obj) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}
+
+function clickLoot(){
+    var claimableIcon = document.getElementsByClassName('claimable-bonus__icon')[0];
+
+    if(typeof claimableIcon != 'undefined' && claimable){
+        var lootButton = claimableIcon.parentNode.parentNode;
+        //Acces to storage to increment the value
+        var url = window.location.href;
+
+        chrome.storage.sync.get(['ChannelsPoints'], function(result){
+            if(isEmpty(result)){
+                var channelArray = [];
+                var channel = {name: url, points: 50};
+                channelArray.push(channel);
+                chrome.storage.sync.set({'ChannelsPoints': channelArray}, function() {
+                    //console.log('El nuevo valor de  ' +channel.name+ ' es ahora ' + channel.points);
+                });
+            }else{
+
+                //To check if this channel already exists
+                var found = false;
+                result['ChannelsPoints'].forEach(function(element, i, array){
+                    if(element.name == url){
+                        //We already have stored this channel
+                        element.points += 50; //TODO: Change this static 50 for 100 if he is suscribed
+                        //console.log(element.points);
+                        found = true;
+                    }
+                });
+                
+                //If the channel identified is not in the storage, we create a new object
+                if(!found){
+                    var channel = {name: url, points: 50};
+                    result['ChannelsPoints'].push(channel);
+                }
+
+                chrome.storage.sync.set({'ChannelsPoints': result['ChannelsPoints']}, function() {
+                    //console.log('El nuevo valor de  ' +channel.name+ ' es ahora ' + channel.points);
+                });
+
+            }
+        });
+
+        lootButton.click();
+        claimable = false;
+    }
+}
+
 function checkLoot(){
 
     var claimableIcon = document.getElementsByClassName('claimable-bonus__icon')[0];
-    if(typeof claimableIcon != 'undefined'){
-        var lootButton = claimableIcon.parentNode.parentNode;
-        lootButton.click();
+    if(typeof claimableIcon != 'undefined' && !claimable){
+        claimable = true;
+        setInterval(clickLoot,2000); //We set a delay between detecting the loot and clicking it
     }
     
 }
 
-setInterval(checkLoot,4000);
+setInterval(checkLoot,1000);

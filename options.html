@@ -1,21 +1,44 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <style>
-      button {
-        height: 30px;
-        width: 30px;
-        outline: none;
-        margin: 10px;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="buttonDiv">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="Bootstrap/css/bootstrap.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet"
+          href="Chartist/chartist.css">
+  <script src="Bootstrap/js/bootstrap.bundle.js"></script>
+</head>
+<body>
+  <div class="d-flex justify-content-center pt-5">
+    <h1>STATS</h1>
+  </div>
+
+  <div class="d-flex justify-content-center pt-5">
+    <ol id="channel-stats-list"></ol>
+  </div>
+  <div class="d-flex justify-content-center">
+    <button type="button" class="btn btn-primary"  id="resetCount">Reset points</button>  
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-1">
+      </div>
+      <div class="col-10">
+
+        <div class="ct-chart ct-golden-section" id="ct-chart"></div>
+        
+      </div>
+      <div class="col-1">
+      </div>
     </div>
-    <div>
-      <p>Configuration page!</p>
-    </div>
-  </body>
-  <script src="options.js"></script>
+  </div>
+
+
+
+</body>
+
+<script src="Chartist/chartist.js"></script>
+<script src="options.js"></script>
+
 </html>
