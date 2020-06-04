@@ -36,7 +36,11 @@ function AddChannelPoints(){
             sortedRanking.forEach(function(element, i, array){
                 //Create an ordered list and store values for the plot
                 div.innerHTML += `<li>  <a href='${element.name}'>${element.name}</a> --- ${element.points} pts`;
-                labels.push(element.name);
+                var lastSlash = element.name.lastIndexOf('/');
+                var res = element.name.substring(lastSlash+1);
+                res = res.charAt(0).toUpperCase() + res.slice(1);
+                labels.push(res);
+                
                 values.push(element.points);
             });
             
@@ -46,7 +50,7 @@ function AddChannelPoints(){
                 //values,
                 series: [values]
               }, {
-                seriesBarDistance: 10,
+                seriesBarDistance: 5,
                 reverseData: true,
                 horizontalBars: true,
                 axisY: {
