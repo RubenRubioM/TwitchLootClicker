@@ -1,15 +1,28 @@
-let changeColor = document.getElementById('changeColor');
+function isEmpty(obj) {
+  for(var key in obj) {
+      if(obj.hasOwnProperty(key))
+          return false;
+  }
+  return true;
+}
 
-chrome.storage.sync.get('color', function(data) {
-  changeColor.style.backgroundColor = data.color;
-  changeColor.setAttribute('value', data.color);
+chrome.runtime.onMessage.addListener(function(response,sender,sendResponse){
+    console.log(response);
 });
 
-changeColor.onclick = function(element) {
-    let color = element.target.value;
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-      chrome.tabs.executeScript(
-          tabs[0].id,
-          {code: 'document.body.style.backgroundColor = "' + color + '";'});
+function UpdateTimeLeft(){
+    var div = document.getElementById('time-to-box');
+    var url = window.location.href;
+    chrome.storage.sync.get(['ChannelsPoints'], function(result){
+        if(!isEmpty(result)){
+
+            result['ChannelsPoints'].forEach(function(element, i, array){
+                if(element.name == url){
+                    div.innerText = element.timeToBox;
+                }
+            });
+        }
     });
-};
+}
+
+setInterval(UpdateTimeLeft,1000);

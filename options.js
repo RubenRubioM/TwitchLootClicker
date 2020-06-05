@@ -16,9 +16,14 @@ function isEmpty(obj) {
     return true;
 }
 
+function millisToMinutesAndSeconds(millis) {
+    var minutes = Math.floor(millis / 60000);
+    var seconds = ((millis % 60000) / 1000).toFixed(0);
+    return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+}
 
 function AddChannelPoints(){
-    var div = document.getElementById('channel-stats-list');
+    var div = document.getElementById('table-stats');
 
     chrome.storage.sync.get(['ChannelsPoints'], function(result){
         if(!isEmpty(result)){
@@ -33,12 +38,21 @@ function AddChannelPoints(){
 
             var labels = [];
             var values = [];
+            var position = 1;
             sortedRanking.forEach(function(element, i, array){
                 //Create an ordered list and store values for the plot
-                div.innerHTML += `<li>  <a href='${element.name}'>${element.name}</a> --- ${element.points} pts`;
+                //div.innerHTML += `<li>  <a href='${element.name}'>${element.name}</a> --- ${element.points} pts`;
+               
                 var lastSlash = element.name.lastIndexOf('/');
                 var res = element.name.substring(lastSlash+1);
                 res = res.charAt(0).toUpperCase() + res.slice(1);
+
+                div.innerHTML += `  <tr>
+                                        <th scope="row">${position++}</th>
+                                        <td><a href="${element.name}">${res}</a></td> 
+                                        <td> ${element.points} </td>
+                                        <td> ${ millisToMinutesAndSeconds(element.timeToBox)} </td>
+                                    </tr>`;
                 labels.push(res);
                 
                 values.push(element.points);
@@ -76,6 +90,7 @@ function ResetAllPoints(){
 
             chrome.storage.sync.remove(['ChannelsPoints'], function() {
                 console.log('All channels deleted');
+                alert("All channel points reseted");
             });
         }
     });

@@ -19,3 +19,8 @@ chrome.runtime.onInstalled.addListener(function() {
     }]);
   });
 });
+
+
+chrome.runtime.onMessage.addListener(function(response,sender,sendResponse){
+  console.log(response);
+});

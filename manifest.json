@@ -1,19 +1,14 @@
 {
     "name": "Twitch loot auto-clicker",
     "version": "1.0",
-    "description": "An extension who clicks on every twitch loot",
+    "description": "An extension who clicks on every twitch loot and gets you reports about it",
     "permissions": ["activeTab","declarativeContent","storage"],
     "options_page": "options.html",
     "background": {
         "scripts": ["background.js"],
         "persistent": false
     },
-    "page_action": {
-        "default_popup": "popup.html",
-        "default_icon": {
-            "32": "images/appIcon.png"
-        }
-    },
+
     "content_scripts": [
         {
             "matches" : ["*://*.twitch.tv/*"],
