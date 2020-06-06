@@ -1,6 +1,6 @@
 
 var claimable = false;
-var timeBetweenChecking = 25000;
+var timeBetweenChecking = 1000;
 var active = true;
 
 function isEmpty(obj) {
@@ -19,12 +19,12 @@ function clickLoot(){
         //Acces to storage to increment the value
         var url = window.location.href;
 
-        chrome.storage.sync.get(['ChannelsPoints'], function(result){
+        chrome.storage.local.get(['ChannelsPoints'], function(result){
             var channel = {name: url, points: 50, timeToBox: 900000};
             if(isEmpty(result)){
                 var channelArray = [];
                 channelArray.push(channel);
-                chrome.storage.sync.set({'ChannelsPoints': channelArray}, function() {
+                chrome.storage.local.set({'ChannelsPoints': channelArray}, function() {
                     //console.log('El nuevo valor de  ' +channel.name+ ' es ahora ' + channel.points);
                 });
             }else{
@@ -46,7 +46,7 @@ function clickLoot(){
                     result['ChannelsPoints'].push(channel);
                 }
 
-                chrome.storage.sync.set({'ChannelsPoints': result['ChannelsPoints']}, function() {
+                chrome.storage.local.set({'ChannelsPoints': result['ChannelsPoints']}, function() {
                     //console.log('El nuevo valor de  ' +channel.name+ ' es ahora ' + channel.points);
                 });
 
@@ -61,9 +61,9 @@ function clickLoot(){
 function checkTime(){
     var url = window.location.href;
 
-    chrome.storage.sync.get(['ChannelsPoints'], function(result){
+    chrome.storage.local.get(['ChannelsPoints'], function(result){
         
-
+        if(isEmpty(result)) return;
         //To check if this channel already exists
         result['ChannelsPoints'].forEach(function(element, i, array){
             if(element.name == url){
@@ -74,7 +74,7 @@ function checkTime(){
         });
         
 
-        chrome.storage.sync.set({'ChannelsPoints': result['ChannelsPoints']}, function() {
+        chrome.storage.local.set({'ChannelsPoints': result['ChannelsPoints']}, function() {
             //console.log('El nuevo valor de  ' +channel.name+ ' es ahora ' + channel.points);
         });
 

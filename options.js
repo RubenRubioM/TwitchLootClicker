@@ -28,7 +28,7 @@ function millisToMinutesAndSeconds(millis) {
 function AddChannelPoints(){
     var div = document.getElementById('table-stats');
 
-    chrome.storage.sync.get(['ChannelsPoints'], function(result){
+    chrome.storage.local.get(['ChannelsPoints'], function(result){
         if(!isEmpty(result)){
             //To order the objects
             var sortedRanking = result['ChannelsPoints'].sort(function(a,b){
@@ -87,11 +87,11 @@ function AddChannelPoints(){
 }
 
 function ResetAllPoints(){
-    chrome.storage.sync.get(['ChannelsPoints'], function(result){
+    chrome.storage.local.get(['ChannelsPoints'], function(result){
         if(!isEmpty(result)){
 
 
-            chrome.storage.sync.remove(['ChannelsPoints'], function() {
+            chrome.storage.local.remove(['ChannelsPoints'], function() {
                 console.log('All channels deleted');
                 alert("All channel points reseted");
             });
