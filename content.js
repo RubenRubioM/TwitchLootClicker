@@ -20,7 +20,7 @@ function clickLoot(){
         var url = window.location.href;
 
         chrome.storage.local.get(['ChannelsPoints'], function(result){
-            var channel = {name: url, points: 50, timeToBox: 900000};
+            var channel = {name: url, points: 50, timeToBox: 894000};
             if(isEmpty(result)){
                 var channelArray = [];
                 channelArray.push(channel);
@@ -35,7 +35,7 @@ function clickLoot(){
                     if(element.name == url){
                         //We already have stored this channel
                         element.points += 50; //TODO: Change this static 50 for 100 if he is suscribed
-                        element.timeToBox = 900000;
+                        element.timeToBox = 894000;
                         //console.log(element.points);
                         found = true;
                     }
@@ -91,7 +91,7 @@ function checkLoot(){
     var claimableIcon = document.getElementsByClassName('claimable-bonus__icon')[0];
     if(typeof claimableIcon != 'undefined' && !claimable){
         claimable = true;
-        setInterval(clickLoot,2000); //We set a delay between detecting the loot and clicking it
+        setInterval(clickLoot,1000); //We set a delay between detecting the loot and clicking it
     }
     
 }
