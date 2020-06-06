@@ -1,6 +1,6 @@
 
 var claimable = false;
-var timeBetweenChecking = 6000;
+var timeBetweenChecking = 25000;
 var active = true;
 
 function isEmpty(obj) {
