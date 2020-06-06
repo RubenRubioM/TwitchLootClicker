@@ -26,6 +26,9 @@ function millisToMinutesAndSeconds(millis) {
 }
 
 function AddChannelPoints(){
+
+    StorageLocalInSync();
+
     var div = document.getElementById('table-stats');
 
     chrome.storage.local.get(['ChannelsPoints'], function(result){
@@ -101,3 +104,12 @@ function ResetAllPoints(){
 
 
 
+function StorageLocalInSync(){
+    chrome.storage.local.get(['ChannelsPoints'], function(result){
+
+        chrome.storage.sync.set({'ChannelsPoints': result['ChannelsPoints']}, function() {
+            //console.log('El nuevo valor de  ' +channel.name+ ' es ahora ' + channel.points);
+        });
+    });
+}
+    
