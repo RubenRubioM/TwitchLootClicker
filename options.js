@@ -74,7 +74,7 @@ function AddChannelPoints(){
                 reverseData: true,
                 horizontalBars: true,
                 axisY: {
-                  offset: 200,
+                  offset: 100,
                   showGrid: false
                 },
                 axisX: {
