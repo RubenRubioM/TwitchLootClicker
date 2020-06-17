@@ -69,6 +69,8 @@ function AddChannelPoints(){
                 labels.push(res);
                 values.push(element.points);
             });
+
+            let heightValue = sortedRanking.length * 20;
             
             //Create the plot, type bar
             new Chartist.Bar('.ct-chart', {
@@ -76,6 +78,7 @@ function AddChannelPoints(){
                 //values,
                 series: [values]
               }, {
+                height: heightValue,
                 seriesBarDistance: 5,
                 reverseData: true,
                 horizontalBars: true,
@@ -89,9 +92,8 @@ function AddChannelPoints(){
             });
 
 
-        }else{
-
         }
+
     });
 }
 
