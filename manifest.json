@@ -1,6 +1,6 @@
 {
     "name": "Twitch loot auto-clicker",
-    "version": "1.0",
+    "version": "1.2",
     "description": "An extension who clicks on every twitch loot and gets you reports about it",
     "permissions": ["storage"],
     "options_page": "options.html",
@@ -16,7 +16,10 @@
         }
     ],
     "icons": {
-        "32": "images/appIcon.png"
+        "16": "images/appIcon16.png",
+        "32": "images/appIcon32.png",
+        "48": "images/appIcon48.png",
+        "128": "images/appIcon128.png"
     },
     "manifest_version": 2
 }
