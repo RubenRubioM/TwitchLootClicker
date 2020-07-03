@@ -65,7 +65,7 @@ function AddChannelPoints(){
             });
             
             let chartHeight = (1000/25) * values.length;
-            console.log(chartHeight);
+            //console.log(chartHeight);
             //Create the plot, type bar
             new Chartist.Bar('.ct-chart', {
                 labels,
@@ -120,7 +120,7 @@ function StorageLocalInSync(){
 
 function DEBUG_ADD_POINTS(channel){
     var url = channel;
-
+    url = url.split('?')[0]; //In case we have Ninja?referred=raid we get only Ninja
     chrome.storage.local.get(['ChannelsPoints'], function(result){
         var channel = {name: url, points: 50, timeToBox: 894000};
         if(isEmpty(result)){

@@ -18,6 +18,8 @@ function clickLoot(){
         var lootButton = claimableIcon.parentNode.parentNode;
         //Acces to storage to increment the value
         var url = window.location.href;
+        url = url.split('?')[0]; //In case we have Ninja?referred=raid we get only Ninja
+
 
         chrome.storage.local.get(['ChannelsPoints'], function(result){
             var channel = {name: url, points: 50, timeToBox: 894000};
@@ -60,6 +62,7 @@ function clickLoot(){
 
 function checkTime(){
     var url = window.location.href;
+    url = url.split('?')[0]; //In case we have Ninja?referred=raid we get only Ninja
 
     chrome.storage.local.get(['ChannelsPoints'], function(result){
         
