@@ -62,6 +62,7 @@ function clickLoot(){
 
 function checkTime(){
     var url = window.location.href;
+    url = url.split('?')[0]; //In case we have Ninja?referred=raid we get only Ninja
 
     chrome.storage.local.get(['ChannelsPoints'], function(result){
         
