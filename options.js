@@ -27,7 +27,7 @@ function millisToMinutesAndSeconds(millis) {
 
 function AddChannelPoints(){
 
-    StorageLocalInSync();
+    StorageSyncToLocal();
 
     var div = document.getElementById('table-stats');
 
@@ -106,7 +106,10 @@ function ResetAllPoints(){
 }
 
 
-
+/**
+ * Save the local storage to the cloud storage
+ * Called once when open the options.html
+ 
 function StorageLocalInSync(){
     chrome.storage.local.get(['ChannelsPoints'], function(result){
 
@@ -114,8 +117,20 @@ function StorageLocalInSync(){
             //console.log('El nuevo valor de  ' +channel.name+ ' es ahora ' + channel.points);
         });
     });
+
+    StorageSyncToLocal();
 }
-    
+*/
+/**
+ * Save the cloud storage to the local storage
+ */
+function StorageSyncToLocal(){
+    chrome.storage.sync.get(['ChannelsPoints'], function(result){
+        chrome.storage.local.set({'ChannelsPoints': result['ChannelsPoints']}, function() {
+            //console.log('El nuevo de  ' +channel.name+ ' es ' + channel.points);
+        });
+    });
+}
 
 
 function DEBUG_ADD_POINTS(channel){
