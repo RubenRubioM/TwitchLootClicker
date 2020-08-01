@@ -99,4 +99,22 @@ function checkLoot(){
     
 }
 
+
+/**
+ * Save the local storage to the cloud storage
+ * Called once when open the options.html
+ */
+function StorageLocalInSync(){
+    chrome.storage.local.get(['ChannelsPoints'], function(result){
+
+        chrome.storage.sync.set({'ChannelsPoints': result['ChannelsPoints']}, function() {
+            //console.log('El nuevo valor de  ' +channel.name+ ' es ahora ' + channel.points);
+        });
+    });
+
+}
+
+setInterval(StorageLocalInSync,30*1000);
+
+
 setInterval(checkLoot,timeBetweenChecking);
