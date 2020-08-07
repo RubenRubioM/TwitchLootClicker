@@ -1,13 +1,4 @@
 document.body.onload = AddChannelPoints();
-
-document.addEventListener('DOMContentLoaded', function() {
-    var link = document.getElementById('resetCount');
-    // onClick's logic below:
-    link.addEventListener('click', function() {
-        ResetAllPoints();
-    });
-});
-
 function isEmpty(obj) {
     for(var key in obj) {
         if(obj.hasOwnProperty(key))
@@ -15,7 +6,6 @@ function isEmpty(obj) {
     }
     return true;
 }
-
 function millisToMinutesAndSeconds(millis) {
     if(millis < 0){
         return "Ready to claim";
@@ -24,6 +14,13 @@ function millisToMinutesAndSeconds(millis) {
     var seconds = ((millis % 60000) / 1000).toFixed(0);
     return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
 }
+document.addEventListener('DOMContentLoaded', function() {
+    var link = document.getElementById('resetCount');
+    // onClick's logic below:
+    link.addEventListener('click', function() {
+        ResetAllPoints();
+    });
+});
 
 function AddChannelPoints(){
 
@@ -105,22 +102,6 @@ function ResetAllPoints(){
     });
 }
 
-
-/**
- * Save the local storage to the cloud storage
- * Called once when open the options.html
- 
-function StorageLocalInSync(){
-    chrome.storage.local.get(['ChannelsPoints'], function(result){
-
-        chrome.storage.sync.set({'ChannelsPoints': result['ChannelsPoints']}, function() {
-            //console.log('El nuevo valor de  ' +channel.name+ ' es ahora ' + channel.points);
-        });
-    });
-
-    StorageSyncToLocal();
-}
-*/
 /**
  * Save the cloud storage to the local storage
  */
