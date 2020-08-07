@@ -1,8 +1,8 @@
-
 var claimable = false;
 var timeBetweenChecking = 1000;
+var syncPolling = 30;
 var active = true;
-
+var syncInLocal = false;
 function isEmpty(obj) {
     for(var key in obj) {
         if(obj.hasOwnProperty(key))
@@ -10,6 +10,19 @@ function isEmpty(obj) {
     }
     return true;
 }
+
+setInterval(StorageLocalToSync,syncPolling*1000);
+setInterval(checkLoot,timeBetweenChecking);
+
+/**
+ * When we open the stream we sync the cloud storage to our local storage
+ */
+if(!syncInLocal){
+    StorageSyncToLocal();
+    syncInLocal = true;
+}
+
+
 
 function clickLoot(){
     var claimableIcon = document.getElementsByClassName('claimable-bonus__icon')[0];
@@ -102,9 +115,8 @@ function checkLoot(){
 
 /**
  * Save the local storage to the cloud storage
- * Called once when open the options.html
  */
-function StorageLocalInSync(){
+function StorageLocalToSync(){
     chrome.storage.local.get(['ChannelsPoints'], function(result){
 
         chrome.storage.sync.set({'ChannelsPoints': result['ChannelsPoints']}, function() {
@@ -114,7 +126,14 @@ function StorageLocalInSync(){
 
 }
 
-setInterval(StorageLocalInSync,30*1000);
-
-
-setInterval(checkLoot,timeBetweenChecking);
+/**
+ * Save the cloud storage to the local storage
+ */
+function StorageSyncToLocal(){
+    //console.log("Sync to local...");
+    chrome.storage.sync.get(['ChannelsPoints'], function(result){
+        chrome.storage.local.set({'ChannelsPoints': result['ChannelsPoints']}, function() {
+            //console.log('El nuevo de  ' +channel.name+ ' es ' + channel.points);
+        });
+    });
+}

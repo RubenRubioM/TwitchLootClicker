@@ -1,6 +1,6 @@
 {
     "name": "Twitch loot auto-clicker",
-    "version": "1.4",
+    "version": "1.4.1",
     "description": "An extension who clicks on every twitch loot and gets you reports about it",
     "permissions": ["storage"],
     "options_page": "options.html",
