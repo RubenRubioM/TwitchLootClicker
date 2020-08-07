@@ -1,4 +1,4 @@
-document.body.onload = AddChannelPoints();
+//document.body.onload = AddChannelPoints();
 function isEmpty(obj) {
     for(var key in obj) {
         if(obj.hasOwnProperty(key))
@@ -100,11 +100,26 @@ function ResetAllPoints(){
             });
         }
     });
+
+    setInterval(StorageLocalToSync,100);
+}
+
+/**
+ * Save the local storage to the cloud storage
+ */
+function StorageLocalToSync(){
+    chrome.storage.local.get(['ChannelsPoints'], function(result){
+
+        chrome.storage.sync.set({'ChannelsPoints': result['ChannelsPoints']}, function() {
+            //console.log('El nuevo valor de  ' +channel.name+ ' es ahora ' + channel.points);
+        });
+    });
+
 }
 
 /**
  * Save the cloud storage to the local storage
- */
+ 
 function StorageSyncToLocal(){
     chrome.storage.sync.get(['ChannelsPoints'], function(result){
         chrome.storage.local.set({'ChannelsPoints': result['ChannelsPoints']}, function() {
@@ -112,7 +127,7 @@ function StorageSyncToLocal(){
         });
     });
 }
-
+*/
 
 function DEBUG_ADD_POINTS(channel){
     var url = channel;
