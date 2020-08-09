@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function AddChannelPoints(){
 
-    StorageSyncToLocal();
 
     var div = document.getElementById('table-stats');
 
