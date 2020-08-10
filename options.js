@@ -1,4 +1,4 @@
-//document.body.onload = AddChannelPoints();
+document.body.onload = AddChannelPoints();
 function isEmpty(obj) {
     for(var key in obj) {
         if(obj.hasOwnProperty(key))
