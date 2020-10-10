@@ -1,4 +1,8 @@
+var minutesBetweenBoxes = 15;
+var pointsPerBox = 50;
+
 document.body.onload = AddChannelPoints();
+
 function isEmpty(obj) {
     for(var key in obj) {
         if(obj.hasOwnProperty(key))
@@ -6,6 +10,8 @@ function isEmpty(obj) {
     }
     return true;
 }
+
+// Format milliseconds to minutes and seconds
 function millisToMinutesAndSeconds(millis) {
     if(millis < 0){
         return "Ready to claim";
@@ -14,6 +20,44 @@ function millisToMinutesAndSeconds(millis) {
     var seconds = ((millis % 60000) / 1000).toFixed(0);
     return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
 }
+
+// Format milliseconds to hours, minutes and seconds
+function millisToHoursMinutesAndSeconds(millis){
+    var seconds = (millis / 1000).toFixed(0);
+    var minutes = Math.floor(seconds / 60);
+    var hours = "";
+    if (minutes > 59) {
+        hours = Math.floor(minutes / 60);
+        hours = (hours >= 10) ? hours : "0" + hours;
+        minutes = minutes - (hours * 60);
+        minutes = (minutes >= 10) ? minutes : "0" + minutes;
+    }
+
+    seconds = Math.floor(seconds % 60);
+    seconds = (seconds >= 10) ? seconds : "0" + seconds;
+    if (hours != "") {
+        return hours + "h " + minutes + "m " + seconds + "s";
+    }
+    return minutes + "m " + seconds + "s ";
+}
+
+// Convert minutes to milliseconds
+function minutesToMilliseconds(minutes){
+    return (minutes * 60000);
+}
+
+// Convert points to time watched.
+// Every 50 points is 15 minutes.
+// <param name="points"> Channel points </param>
+// <param name="leftTimeToBox"> Time to next box used for offset </param>
+function pointsToTime(points, leftTimeToBox){
+    var time = minutesToMilliseconds(minutesBetweenBoxes * (points/pointsPerBox));
+    time = time + (minutesToMilliseconds(minutesBetweenBoxes) - leftTimeToBox);
+
+    return millisToHoursMinutesAndSeconds(time);
+}
+
+// Reset points event listener
 document.addEventListener('DOMContentLoaded', function() {
     var link = document.getElementById('resetCount');
     // onClick's logic below:
@@ -23,8 +67,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function AddChannelPoints(){
-
-
     var div = document.getElementById('table-stats');
 
     chrome.storage.local.get(['ChannelsPoints'], function(result){
@@ -43,7 +85,6 @@ function AddChannelPoints(){
             var position = 1;
             sortedRanking.forEach(function(element, i, array){
                 //Create an ordered list and store values for the plot
-                //div.innerHTML += `<li>  <a href='${element.name}'>${element.name}</a> --- ${element.points} pts`;
                
                 var lastSlash = element.name.lastIndexOf('/');
                 var res = element.name.substring(lastSlash+1);
@@ -54,6 +95,7 @@ function AddChannelPoints(){
                                         <td><a href="${element.name}">${res}</a></td> 
                                         <td> ${element.points} </td>
                                         <td> ${ millisToMinutesAndSeconds(element.timeToBox)} </td>
+                                        <td> ${ pointsToTime(element.points, element.timeToBox)} </td>
                                     </tr>`;
                 labels.push(res);
                 
@@ -61,7 +103,7 @@ function AddChannelPoints(){
             });
             
             let chartHeight = (1000/25) * values.length;
-            //console.log(chartHeight);
+
             //Create the plot, type bar
             new Chartist.Bar('.ct-chart', {
                 labels,
