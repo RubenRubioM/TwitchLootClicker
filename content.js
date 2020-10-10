@@ -3,6 +3,7 @@ var timeBetweenChecking = 1000;
 var syncPolling = 30;
 var active = true;
 var syncInLocal = false;
+
 function isEmpty(obj) {
     for(var key in obj) {
         if(obj.hasOwnProperty(key))
