@@ -93,7 +93,7 @@ function AddChannelPoints(){
                 div.innerHTML += `  <tr>
                                         <th scope="row">${position++}</th>
                                         <td><a href="${element.name}">${res}</a></td> 
-                                        <td> ${element.points} </td>
+                                        <td title="Tier 1 sub: ${element.points * 1.2} &#xA;Tier 2 sub: ${element.points * 1.5} &#xA;Tier 3 sub: ${element.points * 2}"> ${element.points} </td>
                                         <td> ${ millisToMinutesAndSeconds(element.timeToBox)} </td>
                                         <td> ${ pointsToTime(element.points, element.timeToBox)} </td>
                                     </tr>`;
