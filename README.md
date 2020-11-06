@@ -1,2 +1,2 @@
 # TwitchLootClicker
-An chrome extension who clicks on the twitch loot
+Chrome extension to click the twitch loot boxes
