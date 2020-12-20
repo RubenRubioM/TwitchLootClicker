@@ -1,4 +1,4 @@
-document.body.onload = AddChannelPoints();
+document.body.onload = LoadConfiguration();
 
 // Convert points to time watched.
 // Every 50 points is 15 minutes.
@@ -20,7 +20,14 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+
+function LoadConfiguration() {
+    AddVersionString();
+    AddChannelPoints();
+}
+
 function AddChannelPoints(){
+
     var div = document.getElementById('table-stats');
 
     chrome.storage.local.get(['ChannelsPoints'], function(result){
@@ -76,24 +83,29 @@ function AddChannelPoints(){
                     showGrid: true
                 }
             });
-
-
-        }else{
-
         }
     });
 }
 
-function ResetAllPoints(){
-    chrome.storage.local.get(['ChannelsPoints'], function(result){
-        if(!isEmpty(result)){
-            chrome.storage.local.remove(['ChannelsPoints'], function() {
-                console.log('All channels deleted');
-                alert("All channel points reseted");
-            });
-        }
-    });
+function AddVersionString(){
+    var manifestData = chrome.runtime.getManifest();
+    document.getElementById('versionString').innerHTML = manifestData.version;
+}
 
+function ResetAllPoints(){
+    var response = confirm("Do you really want to reset all the points?");
+
+    if(response){
+        chrome.storage.local.get(['ChannelsPoints'], function(result){
+            if(!isEmpty(result)){
+                chrome.storage.local.remove(['ChannelsPoints'], function() {
+                    console.log('All channels deleted');
+                    alert("All channel points reseted");
+                });
+            }
+        });
+    }
+    
     setInterval(StorageLocalToSync,100);
 }
 
@@ -104,7 +116,7 @@ function StorageLocalToSync(){
     chrome.storage.local.get(['ChannelsPoints'], function(result){
 
         chrome.storage.sync.set({'ChannelsPoints': result['ChannelsPoints']}, function() {
-            //console.log('El nuevo valor de  ' +channel.name+ ' es ahora ' + channel.points);
+            console.log("Local storage synced!");
         });
     });
 
@@ -112,5 +124,5 @@ function StorageLocalToSync(){
 
 function DEBUG_ADD_POINTS(name){
     AddChannel(name)
-    setInterval(StorageLocalToSync,100)
+    setInterval(StorageLocalToSync,1000)
 }
