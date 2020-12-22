@@ -1,5 +1,9 @@
 document.body.onload = LoadConfiguration();
 
+var channelsData;
+var labels;
+var values;
+
 // Convert points to time watched.
 // Every 50 points is 15 minutes.
 // <param name="points"> Channel points </param>
@@ -13,9 +17,9 @@ function pointsToTime(points, leftTimeToBox){
 
 // Reset points event listener
 document.addEventListener('DOMContentLoaded', function() {
-    var link = document.getElementById('resetCount');
+    var resetButton = document.getElementById('resetCount');
     // onClick's logic below:
-    link.addEventListener('click', function() {
+    resetButton.addEventListener('click', function() {
         ResetAllPoints();
     });
 });
@@ -41,8 +45,10 @@ function AddChannelPoints(){
                 }
             });
 
-            var labels = [];
-            var values = [];
+            channelsData = sortedRanking;
+
+            labels = [];
+            values = [];
             var position = 1;
             sortedRanking.forEach(function(element, i, array){
                 //Create an ordered list and store values for the plot
@@ -55,36 +61,75 @@ function AddChannelPoints(){
                                         <th scope="row">${position++}</th>
                                         <td><a href="${element.name}">${res}</a></td> 
                                         <td title="Tier 1 sub: ${element.points * 1.2} &#xA;Tier 2 sub: ${element.points * 1.5} &#xA;Tier 3 sub: ${element.points * 2}"> ${element.points} </td>
-                                        <td> ${ millisToMinutesAndSeconds(element.timeToBox)} </td>
-                                        <td> ${ pointsToTime(element.points, element.timeToBox)} </td>
+                                        <td> ${ millisToMinutesAndSeconds(element.timeToBox) } </td>
+                                        <td> ${ pointsToTime(element.points, element.timeToBox) } </td>
                                     </tr>`;
                 labels.push(res);
                 
                 values.push(element.points);
             });
             
-            let chartHeight = (1000/25) * values.length;
-
-            //Create the plot, type bar
-            new Chartist.Bar('.ct-chart', {
-                labels,
-                //values,
-                series: [values]
-              }, {
-                seriesBarDistance: 5,
-                reverseData: true,
-                horizontalBars: true,
-                height: chartHeight,
-                axisY: {
-                  offset: 100,
-                  showGrid: false
-                },
-                axisX: {
-                    showGrid: true
-                }
-            });
+            DrawHorizontalBarPlot();
+            DrawPieChart();
+            
         }
     });
+}
+
+function DrawHorizontalBarPlot() {
+    let chartHeight = (1000/25) * values.length;
+
+    //Create the plot, type bar
+    new Chartist.Bar('#ct-chart-bar', {
+        labels: labels,
+        series: [values]
+        }, {
+        seriesBarDistance: 5,
+        reverseData: true,
+        horizontalBars: true,
+        height: chartHeight,
+        axisY: {
+            offset: 100,
+            showGrid: false
+        },
+        axisX: {
+            showGrid: true
+        }
+    }, {
+        //Options
+    }, [
+        //ResponsiveOptions
+    ]);
+}
+
+function DrawPieChart() {
+    var pieLabels = [];
+    const sum = values.reduce((partial_sum, a) => partial_sum + a,0); 
+
+    labels.forEach(function(element, i, array){        
+        var label = element + " (" + ((values[i]/sum)*100).toFixed(2) + "%)";
+        pieLabels.push(label);
+    });
+
+    //Create the plot, type bar
+    new Chartist.Pie('#ct-chart-pie',{
+        labels: pieLabels,
+        series: values,
+    }, {
+        width: 600,
+        height: 600,
+        chartPadding: 0,
+        total: sum,
+        showLabel: true,
+        labelPosition: 'center',
+        labelOffset: 250,
+        labelDirection: 'neutral'
+    },{
+        //Options
+    },[
+        //ResponsiveOptions
+    ]);
+
 }
 
 function AddVersionString(){

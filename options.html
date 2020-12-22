@@ -10,18 +10,11 @@
   <script src="constants.js"></script>
 </head>
 <body>
-  <div class="d-flex justify-content-center pt-5">
-    <h1>STATS</h1>
-  </div>
 
-  <div class="container">
+  <div class="container-fluid pt-5 w-100">
     <div class="row">
-      <div class="col-1">
-      </div>
-      <div class="col-10">
+      <div class="col-4">
 
-        <div class="d-flex justify-content-center pt-5">
-          <!--<ol id="channel-stats-list"></ol>-->
           <table class="table table-striped">
             <thead>
               <tr>
@@ -32,32 +25,18 @@
                 <th scope="col" title="Time watched since last reset">Time Watched</th>
               </tr>
             </thead>
-            <tbody id="table-stats">
-      
-            </tbody>
+            <tbody id="table-stats"></tbody>
           </table>
-        </div>
         
       </div>
-      <div class="col-1">
+      <div class="col-4">
+        <div class="ct-chart ct-golden-section" id="ct-chart-bar"></div>
+      </div>
+      <div class="col-4">
+        <div class="ct-chart ct-golden-section" id="ct-chart-pie"></div>
       </div>
     </div>
   </div>
-
-  <div class="container">
-    <div class="row">
-      <div class="col-1">
-      </div>
-      <div class="col-10">
-
-        <div class="ct-chart ct-golden-section" id="ct-chart"></div>
-        
-      </div>
-      <div class="col-1">
-      </div>
-    </div>
-  </div>
-
 
   <div class="d-flex justify-content-center pb-5 pt-5">
     <button type="button" class="btn btn-warning"  id="resetCount">Reset points</button>  
@@ -67,7 +46,7 @@
      <!-- Copyright -->
     <div class="p-3">
       &copy; <time datetime="YYYY">2020</time> Copyright:
-      <a class="text-light" href="https://github.com/RubenRubioM">RubenRubioM</a>
+      <a class="text-light" href="https://www.linkedin.com/in/rub%C3%A9n-rubio-mart%C3%ADnez-938700131/">RubenRubioM</a>
     </div>
     <!-- Copyright -->
     <span>Version <span id="versionString"></span></span>
