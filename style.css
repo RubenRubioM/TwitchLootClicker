@@ -5,3 +5,12 @@ svg{
 #footer_style{
     background-color: aqua;
 }
+
+.channelChartIcon {
+    cursor: pointer;
+    color:#6441a5;
+}
+
+.channelChartIcon:hover {
+    color: #4c317c;
+}

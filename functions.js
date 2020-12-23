@@ -1,3 +1,7 @@
+/**
+ * Converts milliseconds to minutes and seconds
+ * @param {milliseconds} millis 
+ */
 function millisToMinutesAndSeconds(millis) {
     if(millis < 0){
         return "Ready to claim";
@@ -7,6 +11,10 @@ function millisToMinutesAndSeconds(millis) {
     return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
 }
 
+/**
+ * Converts milliseconds to hours, minutes and seconds
+ * @param {milliseconds} millis 
+ */
 function millisToHoursMinutesAndSeconds(millis){
     var seconds = (millis / 1000).toFixed(0);
     var minutes = Math.floor(seconds / 60);
@@ -26,10 +34,18 @@ function millisToHoursMinutesAndSeconds(millis){
     return minutes + "m " + seconds + "s ";
 }
 
+/**
+ * Convert minutes to milliseconds
+ * @param {minutes} minutes 
+ */
 function minutesToMilliseconds(minutes){
     return (minutes * 60000);
 }
 
+/**
+ * Checks if the object is empty
+ * @param {Object} obj 
+ */
 function isEmpty(obj) {
     for(var key in obj) {
         if(obj.hasOwnProperty(key))
@@ -38,6 +54,10 @@ function isEmpty(obj) {
     return true;
 }
 
+/**
+ * Adds a channel
+ * @param {Channel name} name 
+ */
 function AddChannel(name) {
     url = name.split('?')[0]; //In case we have Ninja?referred=raid we get only Ninja
     var channelToReturn;

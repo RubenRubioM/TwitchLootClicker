@@ -4,10 +4,11 @@ var channelsData;
 var labels;
 var values;
 
-// Convert points to time watched.
-// Every 50 points is 15 minutes.
-// <param name="points"> Channel points </param>
-// <param name="leftTimeToBox"> Time to next box used for offset </param>
+/**
+ * Converts points to time watched
+ * @param {Channel points} points 
+ * @param {Time to next box used for offset} leftTimeToBox 
+ */
 function pointsToTime(points, leftTimeToBox){
     var time = minutesToMilliseconds(minutesBetweenBoxes * (points/pointsPerBox));
     time = time + (minutesToMilliseconds(minutesBetweenBoxes) - leftTimeToBox);
@@ -15,7 +16,22 @@ function pointsToTime(points, leftTimeToBox){
     return millisToHoursMinutesAndSeconds(time);
 }
 
-// Reset points event listener
+/**
+ * Deletes all the charts
+ */
+function DeleteCharts() {
+    var barChart = document.getElementById('ct-chart-bar');
+    var pieChart = document.getElementById('ct-chart-pie');
+    var barChannelChart = document.getElementById('ct-chart-bar-channel');
+
+    if(barChart != null) barChart.parentNode.removeChild(barChart);
+    if(pieChart != null) pieChart.parentNode.removeChild(pieChart);
+    if(barChannelChart != null) barChannelChart.parentNode.removeChild(barChannelChart);
+}
+
+/**
+ * Triggered when loading the page
+ */
 document.addEventListener('DOMContentLoaded', function() {
     var resetButton = document.getElementById('resetCount');
     var barChartButton = document.getElementById('barChartButton');
@@ -26,14 +42,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     barChartButton.addEventListener('click', function() {
-        var barChart = document.getElementById('ct-chart-bar');
-        var pieChart = document.getElementById('ct-chart-pie');
-        var barChannelChart = document.getElementById('ct-chart-bar-channel');
         var chartDiv = document.getElementById('chart-div');
 
-        if(barChart != null) barChart.parentNode.removeChild(barChart);
-        if(pieChart != null) pieChart.parentNode.removeChild(pieChart);
-        if(barChannelChart != null) barChannelChart.parentNode.removeChild(barChannelChart);
+        DeleteCharts();
 
         var newElement = document.createElement('div');
         newElement.innerHTML = `<div class="ct-chart ct-golden-section d-flex justify-content-center" id="ct-chart-bar"></div>`;
@@ -42,14 +53,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     pieChartButton.addEventListener('click', function() {
-        var barChart = document.getElementById('ct-chart-bar');
-        var pieChart = document.getElementById('ct-chart-pie');
-        var barChannelChart = document.getElementById('ct-chart-bar-channel');
         var chartDiv = document.getElementById('chart-div');
 
-        if(barChart != null) barChart.parentNode.removeChild(barChart);
-        if(pieChart != null) pieChart.parentNode.removeChild(pieChart);
-        if(barChannelChart != null) barChannelChart.parentNode.removeChild(barChannelChart);
+        DeleteCharts();
 
         var newElement = document.createElement('div');
         chartDiv.innerHTML = `<div class="ct-chart ct-golden-section d-flex justify-content-center" id="ct-chart-pie"></div>`;
@@ -58,13 +64,18 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-
+/**
+ * Load configuration
+ */
 function LoadConfiguration() {
     AddVersionString();
-    AddChannelPoints();
+    AddInitialHTML();
 }
 
-function AddChannelPoints(){
+/**
+ * Adds the initial HTML which is generated dynamically
+ */
+function AddInitialHTML(){
 
     var div = document.getElementById('table-stats');
 
@@ -93,21 +104,48 @@ function AddChannelPoints(){
 
                 div.innerHTML += `  <tr>
                                         <th scope="row">${position++}</th>
-                                        <td><a href="${element.name}">${res}</a></td> 
+                                        <td>${res} <a href="${element.name}"><i class="fab fa-twitch"></i></a>  <span class="channelChartIcon" id="${res}-chart" data-name=${element.name}><i class="fas fa-chart-bar" ></i></span></td> 
                                         <td title="Tier 1 sub: ${element.points * 1.2} &#xA;Tier 2 sub: ${element.points * 1.5} &#xA;Tier 3 sub: ${element.points * 2}"> ${element.points} </td>
                                         <td> ${ millisToMinutesAndSeconds(element.timeToBox) } </td>
                                         <td> ${ pointsToTime(element.points, element.timeToBox) } </td>
                                     </tr>`;
                 labels.push(res);
-                
                 values.push(element.points);
             });
             
-            DrawHorizontalBarChart();            
+            DrawHorizontalBarChart();    
+            SetUpChannelChartsListeners();        
         }
     });
 }
 
+/**
+ * Add the event listeners for the channel chart icons
+ */
+function SetUpChannelChartsListeners() {
+    const spans = document.getElementsByClassName("channelChartIcon");
+
+    for (let i = 0; i < spans.length; i++) {
+        spans[i].addEventListener('click', function() {
+            DrawChannelChart(spans[i].dataset['name'])
+        }); 
+    }
+
+}
+
+/**
+ * Draw channel chart of the channel name given
+ * @param {Name to search in the channelsData} name 
+ */
+function DrawChannelChart(name) {
+    console.log(name);
+
+    DeleteCharts();
+}
+
+/**
+ * Draw the channels horizontal bar chart
+ */
 function DrawHorizontalBarChart() {
     let chartHeight = (1000/25) * values.length;
 
@@ -134,6 +172,9 @@ function DrawHorizontalBarChart() {
     ]);
 }
 
+/**
+ * Draw the channels pie chart
+ */
 function DrawPieChart() {
     var pieLabels = [];
     const sum = values.reduce((partial_sum, a) => partial_sum + a,0); 
@@ -164,11 +205,17 @@ function DrawPieChart() {
 
 }
 
+/**
+ * Add extension version in the footer
+ */
 function AddVersionString(){
     var manifestData = chrome.runtime.getManifest();
     document.getElementById('versionString').innerHTML = manifestData.version;
 }
 
+/**
+ * Resets all sync points
+ */
 function ResetAllPoints(){
     var response = confirm("Do you really want to reset all the points?");
 
@@ -187,7 +234,7 @@ function ResetAllPoints(){
 }
 
 /**
- * Save the local storage to the cloud storage
+ * Save local storage in sync
  */
 function StorageLocalToSync(){
     chrome.storage.local.get(['ChannelsPoints'], function(result){
@@ -199,6 +246,10 @@ function StorageLocalToSync(){
 
 }
 
+/**
+ * Adds points to the channel given
+ * @param {name of the channel} name 
+ */
 function DEBUG_ADD_POINTS(name){
     AddChannel(name)
     setInterval(StorageLocalToSync,1000)

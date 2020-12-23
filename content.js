@@ -15,6 +15,9 @@ if(!syncInLocal){
     syncInLocal = true;
 }
 
+/**
+ * Click the loot and add or update the channel
+ */
 function clickLoot(){
     var claimableIcon = document.getElementsByClassName('claimable-bonus__icon')[0];
 
@@ -29,6 +32,9 @@ function clickLoot(){
     }
 }
 
+/**
+ * Updates the time left to box data
+ */
 function checkTime(){
     var url = window.location.href;
     url = url.split('?')[0]; //In case we have Ninja?referred=raid we get only Ninja
@@ -53,6 +59,9 @@ function checkTime(){
     });
 }
 
+/**
+ * Checks if there is any loot to click
+ */
 function checkLoot(){
 
     //If we have the plugin disabled, return
