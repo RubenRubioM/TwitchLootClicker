@@ -18,9 +18,43 @@ function pointsToTime(points, leftTimeToBox){
 // Reset points event listener
 document.addEventListener('DOMContentLoaded', function() {
     var resetButton = document.getElementById('resetCount');
+    var barChartButton = document.getElementById('barChartButton');
+    var pieChartButton = document.getElementById('pieChartButton');
     // onClick's logic below:
     resetButton.addEventListener('click', function() {
         ResetAllPoints();
+    });
+
+    barChartButton.addEventListener('click', function() {
+        var barChart = document.getElementById('ct-chart-bar');
+        var pieChart = document.getElementById('ct-chart-pie');
+        var barChannelChart = document.getElementById('ct-chart-bar-channel');
+        var chartDiv = document.getElementById('chart-div');
+
+        if(barChart != null) barChart.parentNode.removeChild(barChart);
+        if(pieChart != null) pieChart.parentNode.removeChild(pieChart);
+        if(barChannelChart != null) barChannelChart.parentNode.removeChild(barChannelChart);
+
+        var newElement = document.createElement('div');
+        newElement.innerHTML = `<div class="ct-chart ct-golden-section d-flex justify-content-center" id="ct-chart-bar"></div>`;
+        chartDiv.appendChild(newElement);
+        DrawHorizontalBarChart();
+    });
+
+    pieChartButton.addEventListener('click', function() {
+        var barChart = document.getElementById('ct-chart-bar');
+        var pieChart = document.getElementById('ct-chart-pie');
+        var barChannelChart = document.getElementById('ct-chart-bar-channel');
+        var chartDiv = document.getElementById('chart-div');
+
+        if(barChart != null) barChart.parentNode.removeChild(barChart);
+        if(pieChart != null) pieChart.parentNode.removeChild(pieChart);
+        if(barChannelChart != null) barChannelChart.parentNode.removeChild(barChannelChart);
+
+        var newElement = document.createElement('div');
+        chartDiv.innerHTML = `<div class="ct-chart ct-golden-section d-flex justify-content-center" id="ct-chart-pie"></div>`;
+        chartDiv.appendChild(newElement);
+        DrawPieChart();
     });
 });
 
@@ -69,14 +103,12 @@ function AddChannelPoints(){
                 values.push(element.points);
             });
             
-            DrawHorizontalBarPlot();
-            DrawPieChart();
-            
+            DrawHorizontalBarChart();            
         }
     });
 }
 
-function DrawHorizontalBarPlot() {
+function DrawHorizontalBarChart() {
     let chartHeight = (1000/25) * values.length;
 
     //Create the plot, type bar
@@ -118,11 +150,11 @@ function DrawPieChart() {
     }, {
         width: 600,
         height: 600,
-        chartPadding: 0,
+        chartPadding: 10,
         total: sum,
         showLabel: true,
         labelPosition: 'center',
-        labelOffset: 250,
+        labelOffset: 225,
         labelDirection: 'neutral'
     },{
         //Options
