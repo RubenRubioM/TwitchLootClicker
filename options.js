@@ -134,16 +134,25 @@ function SetUpChannelChartsListeners() {
  */
 function DrawChannelChart(name) {
     DeleteCharts();
-    
+    const channel = channelsData.find(element => element.name == name);
+
     var chartDiv = document.getElementById('chart-div');
     var newElement = document.createElement('div');
+
+    if(channel.timeRegister == 'undefined'){
+        chartDiv.innerHTML = `
+        <h2 class="d-flex justify-content-center mt-3">NO DATA</h2>
+        `;
+        return;
+    }
+    
+    
     chartDiv.innerHTML = `
         <h2 class="d-flex justify-content-center mt-3"><a href="${name}">${name}</a></h2>
         <div class="ct-chart ct-golden-section d-flex justify-content-center" id="ct-chart-bar-channel"></div>
         `;
     chartDiv.appendChild(newElement);
 
-    const channel = channelsData.find(element => element.name == name);
     
     // TimeRegister format = YYYY-MM-DDTHH:MM:SS.MSMSMSZ
     const timeRegister = channel.timeRegister;
