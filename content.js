@@ -46,7 +46,11 @@ function checkTime(){
         result['ChannelsPoints'].forEach(function(element, i, array){
             if(element.name == url){
                 //We already have stored this channel
-                element.timeToBox -= timeBetweenChecking;
+                if(element.timeToBox >= 0){
+                    element.timeToBox -= timeBetweenChecking;
+                }else{
+                    element.timeToBox = 0;
+                }
 
             }
         });
