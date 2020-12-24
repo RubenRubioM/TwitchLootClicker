@@ -20,13 +20,8 @@ function pointsToTime(points, leftTimeToBox){
  * Deletes all the charts
  */
 function DeleteCharts() {
-    var barChart = document.getElementById('ct-chart-bar');
-    var pieChart = document.getElementById('ct-chart-pie');
-    var barChannelChart = document.getElementById('ct-chart-bar-channel');
-
-    if(barChart != null) barChart.parentNode.removeChild(barChart);
-    if(pieChart != null) pieChart.parentNode.removeChild(pieChart);
-    if(barChannelChart != null) barChannelChart.parentNode.removeChild(barChannelChart);
+    var chartDiv = document.getElementById('chart-div');
+    chartDiv.innerHTML = '';
 }
 
 /**
