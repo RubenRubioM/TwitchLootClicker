@@ -2,3 +2,20 @@ svg{
     position: relative !important;
 }
 
+#footer_style{
+    background-color: aqua;
+}
+
+#ct-chart-bar-channel {
+    max-width: 600px;
+    overflow-x: scroll;
+}
+
+.channelChartIcon {
+    cursor: pointer;
+    color:#6441a5;
+}
+
+.channelChartIcon:hover {
+    color: #4c317c;
+}

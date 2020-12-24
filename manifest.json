@@ -1,25 +1,41 @@
 {
+    "manifest_version": 2,
     "name": "Twitch loot auto-clicker",
-    "version": "1.5.1",
-    "description": "An extension who clicks on every twitch loot and gets you reports about it",
-    "permissions": ["storage"],
-    "options_page": "options.html",
-    "background": {
-        "scripts": ["background.js"],
-        "persistent": false
-    },
+    "version": "2.0.0",
 
-    "content_scripts": [
-        {
-            "matches" : ["*://*.twitch.tv/*"],
-            "js" : ["content.js"]
-        }
-    ],
+    "description": "An extension who clicks on every twitch loot and gets you reports about it",
+
     "icons": {
         "16": "images/appIcon16.png",
         "32": "images/appIcon32.png",
         "48": "images/appIcon48.png",
         "128": "images/appIcon128.png"
     },
-    "manifest_version": 2
+
+    "page_action": {
+        "default_popup": "popup.html",
+        "default_icon": {
+            "16": "images/appIcon16.png",
+            "32": "images/appIcon32.png",
+            "48": "images/appIcon48.png",
+            "128": "images/appIcon128.png"
+        }
+    },
+
+    "author" : "Rubén Rubio Martínez",
+    
+    "content_scripts": [
+        {
+            "matches" : ["*://*.twitch.tv/*"],
+            "js" : ["content.js","functions.js","constants.js"]
+        }
+    ],
+    "options_page": "options.html",
+    "offline_enabled": false,
+    "permissions": ["storage"],
+    "web_accessible_resources": [
+        "manifest.json"
+    ]
+
+    
 }
