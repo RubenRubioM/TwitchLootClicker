@@ -349,7 +349,7 @@ function ResetAllPoints(){
         });
     }
     
-    setInterval(StorageLocalToSync,100);
+    setTimeout(StorageLocalToSync,250);
 }
 
 /**
@@ -371,5 +371,5 @@ function StorageLocalToSync(){
  */
 function DEBUG_ADD_POINTS(name){
     AddChannel(name)
-    setInterval(StorageLocalToSync,1000)
+    setTimeout(StorageLocalToSync,250)
 }
