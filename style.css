@@ -6,6 +6,11 @@ svg{
     background-color: aqua;
 }
 
+#ct-chart-bar-channel {
+    max-width: 600px;
+    overflow-x: scroll;
+}
+
 .channelChartIcon {
     cursor: pointer;
     color:#6441a5;

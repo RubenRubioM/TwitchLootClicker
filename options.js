@@ -138,9 +138,100 @@ function SetUpChannelChartsListeners() {
  * @param {Name to search in the channelsData} name 
  */
 function DrawChannelChart(name) {
-    console.log(name);
-
     DeleteCharts();
+    
+    var chartDiv = document.getElementById('chart-div');
+    var newElement = document.createElement('div');
+    chartDiv.innerHTML = `
+        <h2 class="d-flex justify-content-center mt-3"><a href="${name}">${name}</a></h2>
+        <div class="ct-chart ct-golden-section d-flex justify-content-center" id="ct-chart-bar-channel"></div>
+        `;
+    chartDiv.appendChild(newElement);
+
+    const channel = channelsData.find(element => element.name == name);
+    
+    // TimeRegister format = YYYY-MM-DDTHH:MM:SS.MSMSMSZ
+    const timeRegister = channel.timeRegister;
+    const dateLabels = [];
+    var firstDate = new Date(timeRegister[0]);
+    var lastDate = new Date();
+    lastDate.setDate(lastDate.getDate() + 1);
+
+    var date = new Date(firstDate);
+    var dateString = firstDate.getMonth()+1 + "/" + firstDate.getDate() + "/" + firstDate.getFullYear();
+    var lastDateString = lastDate.getMonth()+1 + "/" + lastDate.getDate() + "/" + lastDate.getFullYear();
+    while(dateString != lastDateString){
+        dateLabels.push(dateString);
+
+        date.setDate(date.getDate() + 1);
+        dateString = date.getMonth()+1 + "/" + date.getDate() + "/" + date.getFullYear()
+    }
+
+    const dateValues = new Array(dateLabels.length).fill(0);
+    dateLabels.forEach(function(dateString,i){
+        timeRegister.forEach(function(element){
+            let timeDate = new Date(element);
+            let timeDateString = timeDate.getMonth()+1 + "/" + timeDate.getDate() + "/" + timeDate.getFullYear();
+        
+            if(dateString == timeDateString)
+                dateValues[i] += pointsPerBox;
+        });
+    });
+
+    //Create the plot, type bar
+    new Chartist.Bar('#ct-chart-bar-channel', {
+        labels: dateLabels,
+        series: [dateValues]
+        }, {
+        axisX: {
+            offset: 20,
+            position: 'end',
+            labelOffset: {
+                x: 0,
+                y: 0,
+            },
+            showLabel: true,
+            showGrid: true,
+            labelInterpolationFnc: Chartist.noop,
+            scaleMinSpace: 30,
+            onlyInteger: false
+        },
+        axisY: {
+            offset: 50,
+            position: 'start',
+            labelOffset: {
+                x: 0,
+                y: 0,
+            },
+            showLabel: true,
+            showGrid: true,
+            labelInterpolationFnc: Chartist.noop,
+            scaleMinSpace: 30,
+            onlyInteger: false
+        },
+        width: undefined,
+        height: 550,
+        high: undefined,
+        low: undefined,
+        referenceValue: 0,
+        chartPadding: {
+            top: 30,
+            right: 15,
+            bottom: 5,
+            left: 30
+        },
+        seriesBarDistance: 15,
+        stackBars: false,
+        stackMode: 'accumulate',
+        horizontalBars: false,
+        distributedSeries: false,
+        reverseData: false,
+        showGridBackground: false,
+    }, {
+        //Options
+    }, [
+        //ResponsiveOptions
+    ]);
 }
 
 /**
@@ -149,22 +240,55 @@ function DrawChannelChart(name) {
 function DrawHorizontalBarChart() {
     let chartHeight = (1000/25) * values.length;
 
-    //Create the plot, type bar
+
     new Chartist.Bar('#ct-chart-bar', {
         labels: labels,
         series: [values]
         }, {
-        seriesBarDistance: 5,
-        reverseData: true,
-        horizontalBars: true,
-        height: chartHeight,
+        axisX: {
+            offset: 20,
+            position: 'end',
+            labelOffset: {
+                x: 0,
+                y: 0,
+            },
+            showLabel: true,
+            showGrid: true,
+            labelInterpolationFnc: Chartist.noop,
+            scaleMinSpace: 30,
+            onlyInteger: false
+        },
         axisY: {
             offset: 100,
-            showGrid: false
+            position: 'start',
+            labelOffset: {
+                x: 0,
+                y: 0,
+            },
+            showLabel: true,
+            showGrid: false,
+            labelInterpolationFnc: Chartist.noop,
+            scaleMinSpace: 30,
+            onlyInteger: false
         },
-        axisX: {
-            showGrid: true
-        }
+        width: undefined,
+        height: chartHeight,
+        high: undefined,
+        low: undefined,
+        referenceValue: 0,
+        chartPadding: {
+            top: 15,
+            right: 15,
+            bottom: 5,
+            left: 10
+        },
+        seriesBarDistance: 5,
+        stackBars: false,
+        stackMode: 'accumulate',
+        horizontalBars: true,
+        distributedSeries: false,
+        reverseData: true,
+        showGridBackground: false,
     }, {
         //Options
     }, [
