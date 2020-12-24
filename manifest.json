@@ -1,5 +1,5 @@
 {
-    "manifest_version": 2,
+    "manifest_version": 3,
     "name": "Twitch loot auto-clicker",
     "version": "2.0.0",
 
@@ -33,6 +33,7 @@
     "options_page": "options.html",
     "offline_enabled": false,
     "permissions": ["storage"],
+    "update_url": "https://github.com/RubenRubioM/TwitchLootClicker/branches",
     "web_accessible_resources": [
         "manifest.json"
     ]
