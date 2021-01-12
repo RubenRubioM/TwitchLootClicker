@@ -79,12 +79,16 @@ function AddChannel(name) {
                     //We already have stored this channel
                     element.points += 50; //TODO: Change this static 50 for 100 if he is suscribed
                     element.timeToBox = timeToNextBox;
-                    if(typeof element.timeRegister === 'undefined'){ 
-                        element.timeRegister = [new Date().toJSON()]
-                    }else{
-                        element.timeRegister.push(new Date().toJSON())
-                    }
+                    
+                    //FIXME: TimeRegister now set to empty array because it was overflowing the chrome storage size
 
+                    if(typeof element.timeRegister === 'undefined'){ 
+                        //element.timeRegister = [new Date().toJSON()]
+                        element.timeRegister = []
+                    }else{
+                        element.timeRegister = []
+                    }
+                    
                     found = true;
                 }
             });
