@@ -139,6 +139,11 @@ function DrawChannelChart(name) {
     var chartDiv = document.getElementById('chart-div');
     var newElement = document.createElement('div');
 
+    chartDiv.innerHTML = `
+        <h2 class="d-flex justify-content-center mt-3">COMING SOON...</h2>
+        `;
+    return;
+
     if(channel.timeRegister == 'undefined'){
         chartDiv.innerHTML = `
         <h2 class="d-flex justify-content-center mt-3">NO DATA</h2>
