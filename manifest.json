@@ -37,6 +37,5 @@
     ],
     "options_page": "options.html",
     "offline_enabled": false,
-    "permissions": ["storage"],
-    "update_url": "https://github.com/RubenRubioM/TwitchLootClicker/branches"    
+    "permissions": ["storage"]
 }
